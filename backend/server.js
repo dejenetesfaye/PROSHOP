@@ -2,6 +2,7 @@ import path from 'path'
 import  express from 'express'
 import dotenv from 'dotenv'
 import colors from 'colors'
+import mongoose from 'mongoose'
 import morgan from 'morgan'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
@@ -54,6 +55,17 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
-app.listen(
-    PORT, 
-    console.log(`server running ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold))
+//app.listen(
+//    PORT, 
+//    console.log(`server running ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold))
+
+
+    const uri = process.env.MONGO_URL;
+mongoose.connect(uri,{useNewUrlParser:true,useCreateIndex:true});
+const connection = mongoose.connection;
+connection.once('open', () => {
+console.log("Connected Database Successfully");
+});
+app.listen(5000,function(req,res){
+console.log('Server is started on port 5000');
+});
